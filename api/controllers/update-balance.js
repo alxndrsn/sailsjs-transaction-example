@@ -50,12 +50,6 @@ module.exports = {
             .update(recipientAccount.id)
             .set({ balance:recipientAccount.balance + amount })
             .usingConnection(db);
-
-        // finally, create a receipt to show that we successfully processed
-        // this transfer request.
-        await Receipt
-            .create({ amount })
-            .usingConnection(db);
       })
       .intercept('E_INSUFFICIENT_FUNDS', () => 'badRequest')
       .intercept('E_NO_SUCH_RECIPIENT',  () => 'notFound');
